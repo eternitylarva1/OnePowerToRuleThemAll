@@ -17,6 +17,6 @@ public class ExampleMod implements EditCardsSubscriber { // 实现接口
     // 当basemod开始注册mod卡牌时，便会调用这个函数
     @Override
     public void receiveEditCards() {
-        // TODO 这里写添加你卡牌的代码
+
     }
 }
