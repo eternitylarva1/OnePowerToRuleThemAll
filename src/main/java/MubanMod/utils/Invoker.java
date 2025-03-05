@@ -1,4 +1,4 @@
-package SeenextMonsterMod.utils;
+package MubanMod.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

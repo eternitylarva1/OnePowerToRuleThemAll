@@ -1,4 +1,4 @@
-package SeenextMonsterMod.utils;
+package MubanMod.utils;
 
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
