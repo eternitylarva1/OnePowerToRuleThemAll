@@ -1,10 +1,13 @@
 package MubanMod.modcore;
 
 import MubanMod.relics.MyRelic;
+import basemod.AutoAdd;
 import basemod.BaseMod;
+import basemod.abstracts.CustomRelic;
 import basemod.helpers.RelicType;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
+import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.StartActSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
@@ -12,13 +15,15 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.MonsterHelper;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
 
 @SpireInitializer
-public class SeenextMonster implements StartActSubscriber , EditStringsSubscriber, EditRelicsSubscriber { // 实现接口
+public class SeenextMonster implements PostInitializeSubscriber,StartActSubscriber , EditStringsSubscriber, EditRelicsSubscriber { // 实现接口
     public SeenextMonster() {
         BaseMod.subscribe(this); // 告诉basemod你要订阅事件
     }
+    public static final String MyModID = "Muban";
 
     public static void initialize() {
         new SeenextMonster();
@@ -33,7 +38,15 @@ public class SeenextMonster implements StartActSubscriber , EditStringsSubscribe
 
     @Override
     public void receiveEditRelics() {
-BaseMod.addRelic(new MyRelic(), RelicType.SHARED);
+        new AutoAdd(MyModID)
+                .packageFilter(MyRelic.class)
+                .any(CustomRelic.class, (info, relic) -> {
+                    BaseMod.addRelic(relic,RelicType.SHARED);
+                    if (info.seen) {
+                        UnlockTracker.markRelicAsSeen(relic.relicId);
+                    }
+                });
+
     }
 
     @Override
@@ -46,5 +59,10 @@ BaseMod.addRelic(new MyRelic(), RelicType.SHARED);
         }
         BaseMod.loadCustomStringsFile(RelicStrings.class, "MubanResources/localization/" + lang + "/relics.json"); // 加载相应语言的卡牌本地化内容。
         // 如果是中文，加载的就是"ExampleResources/localization/ZHS/cards.json"
+    }
+
+    @Override
+    public void receivePostInitialize() {
+
     }
 }
