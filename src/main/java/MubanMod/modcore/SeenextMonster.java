@@ -42,9 +42,9 @@ public class SeenextMonster implements PostInitializeSubscriber,StartActSubscrib
                 .packageFilter(MyRelic.class)
                 .any(CustomRelic.class, (info, relic) -> {
                     BaseMod.addRelic(relic,RelicType.SHARED);
-                    if (info.seen) {
+
                         UnlockTracker.markRelicAsSeen(relic.relicId);
-                    }
+
                 });
 
     }
