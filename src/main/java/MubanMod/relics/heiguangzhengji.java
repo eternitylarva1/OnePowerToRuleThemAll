@@ -4,13 +4,19 @@ import MubanMod.helpers.ModHelper;
 import MubanMod.powers.heiguang;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.HealAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
+import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.powers.BufferPower;
 import com.megacrit.cardcrawl.powers.PoisonPower;
+import com.megacrit.cardcrawl.powers.RegenPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class heiguangzhengji extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
@@ -50,12 +56,30 @@ public class heiguangzhengji extends CustomRelic {
     @Override
     public void onMonsterDeath(AbstractMonster m) {
         super.onMonsterDeath(m);
-        if (m.hasPower(heiguang.POWER_ID))
+        if (m.hasPower(PoisonPower.POWER_ID))
         {
-            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(m, AbstractDungeon.player, new PoisonPower(m,AbstractDungeon.player, 2), 2));
-        }
-    }
+            //当有单位死去时，恢复死亡单位中毒层数一半的生命值
+            AbstractDungeon.actionManager.addToBottom(new HealAction(AbstractDungeon.player, AbstractDungeon.player, m.getPower(PoisonPower.POWER_ID).amount/2));
 
+                    }
+    }
+    public void wasHPLost(int damageAmount) {
+        if (AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT && damageAmount > 0) {
+            this.flash();
+            this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 1), 1));
+            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+            this.counter+=damageAmount;
+            //当拥有遗物后总计失去400点生命值时，“黑光针剂”将会被替换为“破碎的针剂”。
+            if (this.counter>=400)
+            {
+                this.counter=0;
+                this.flash();
+                this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+
+                          }
+        }
+
+    }
     public AbstractRelic makeCopy() {
         return new heiguangzhengji();
     }
