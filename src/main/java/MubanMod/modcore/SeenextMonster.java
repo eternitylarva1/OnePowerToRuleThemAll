@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.MonsterHelper;
 import com.megacrit.cardcrawl.localization.CardStrings;
+import com.megacrit.cardcrawl.localization.PowerStrings;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
@@ -59,6 +60,8 @@ public class SeenextMonster implements PostInitializeSubscriber,StartActSubscrib
         }
         BaseMod.loadCustomStringsFile(RelicStrings.class, "MubanResources/localization/" + lang + "/relics.json"); // 加载相应语言的卡牌本地化内容。
         // 如果是中文，加载的就是"ExampleResources/localization/ZHS/cards.json"
+        BaseMod.loadCustomStringsFile(PowerStrings.class, "MubanResources/localization/" + lang + "/powers.json"); // 加载相应语言的卡牌本地化内容。
+
     }
 
     @Override
