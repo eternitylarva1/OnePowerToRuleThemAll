@@ -3,6 +3,7 @@ package MubanMod.relics;
 import MubanMod.helpers.ModHelper;
 import MubanMod.powers.heiguang;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.HealAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
@@ -10,6 +11,7 @@ import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.shrines.Nloth;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.BufferPower;
@@ -70,12 +72,20 @@ public class heiguangzhengji extends CustomRelic {
             this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
             this.counter+=damageAmount;
             //当拥有遗物后总计失去400点生命值时，“黑光针剂”将会被替换为“破碎的针剂”。
-            if (this.counter>=400)
+            if (this.counter>=100)
             {
                 this.counter=0;
                 this.flash();
                 this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+                this.addToBot(new AbstractGameAction() {
+                    @Override
+                    public void update() {
+                        AbstractDungeon.player.loseRelic(heiguangzhengji.this.relicId);
 
+                        isDone=true;
+                    }
+                }
+                );
                           }
         }
 
