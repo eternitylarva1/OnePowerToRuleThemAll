@@ -2,8 +2,16 @@ package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.powers.BufferPower;
+import com.megacrit.cardcrawl.powers.DexterityPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.FossilizedHelix;
+import com.megacrit.cardcrawl.relics.TungstenRod;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class heikui extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
@@ -30,7 +38,25 @@ public class heikui extends CustomRelic {
         return this.DESCRIPTIONS[0];
     }
 
+    public void atBattleStart() {
+        this.flash();
+        this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+        this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new DexterityPower(AbstractDungeon.player, -6), -6));
+        this.grayscale = true;
+    }
+
+    public int onLoseHpLast(int damageAmount) {
+        if (damageAmount > 0) {
+            this.flash();
+            return damageAmount/2;
+        } else {
+            return damageAmount;
+        }
+    }
+
+
     public AbstractRelic makeCopy() {
         return new heikui();
+
     }
 }

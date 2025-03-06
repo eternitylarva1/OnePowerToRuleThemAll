@@ -2,8 +2,15 @@ package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
+import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.powers.BufferPower;
+import com.megacrit.cardcrawl.powers.IntangiblePlayerPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.IncenseBurner;
 
 public class hudun extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
@@ -26,9 +33,22 @@ public class hudun extends CustomRelic {
 
     // 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
 
-    public String getUpdatedDescription() {
-        return this.DESCRIPTIONS[0];
+    public void atTurnStart() {
+        if (this.counter == -1) {
+            this.counter += 2;
+        } else {
+            ++this.counter;
+        }
+
+        if (this.counter == 10) {
+            this.counter = 0;
+            this.flash();
+            this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, (AbstractCreature)null, new BufferPower(AbstractDungeon.player, 1), 1));
+        }
+
     }
+
 
     public AbstractRelic makeCopy() {
         return new hudun();
