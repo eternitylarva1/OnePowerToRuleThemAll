@@ -1,9 +1,16 @@
 package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
+import MubanMod.powers.heiguang;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.cards.DamageInfo;
+import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.powers.BufferPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.Boot;
 
 public class juanxu extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
@@ -30,6 +37,12 @@ public class juanxu extends CustomRelic {
         return this.DESCRIPTIONS[0];
     }
 
+    public void onAttack(DamageInfo info, int damageAmount, AbstractCreature target) {
+        if (info.owner == AbstractDungeon.player && info.type != DamageInfo.DamageType.THORNS && info.type != DamageInfo.DamageType.HP_LOSS && info.owner != target) {
+            this.flash();
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(target, AbstractDungeon.player, new heiguang(target, 1), 1));
+        }
+    }
     public AbstractRelic makeCopy() {
         return new juanxu();
     }

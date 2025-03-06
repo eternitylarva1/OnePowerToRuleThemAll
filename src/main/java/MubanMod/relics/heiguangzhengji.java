@@ -1,8 +1,15 @@
 package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
+import MubanMod.powers.heiguang;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.LoseHPAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.powers.PoisonPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 public class heiguangzhengji extends CustomRelic {
@@ -28,6 +35,25 @@ public class heiguangzhengji extends CustomRelic {
 
     public String getUpdatedDescription() {
         return this.DESCRIPTIONS[0];
+    }
+
+    @Override
+    public void onPlayCard(AbstractCard c, AbstractMonster m) {
+        super.onPlayCard(c, m);
+        for (AbstractMonster monster : AbstractDungeon.getCurrRoom().monsters.monsters)
+        {
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new PoisonPower(monster,AbstractDungeon.player, 2), 2));
+        }
+        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
+    }
+
+    @Override
+    public void onMonsterDeath(AbstractMonster m) {
+        super.onMonsterDeath(m);
+        if (m.hasPower(heiguang.POWER_ID))
+        {
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(m, AbstractDungeon.player, new PoisonPower(m,AbstractDungeon.player, 2), 2));
+        }
     }
 
     public AbstractRelic makeCopy() {
