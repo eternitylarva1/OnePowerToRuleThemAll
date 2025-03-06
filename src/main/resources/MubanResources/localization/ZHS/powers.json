@@ -1,0 +1,8 @@
+{
+  "Muban:heiguang": {
+    "NAME": "示例能力",
+    "DESCRIPTIONS": [
+      "当你受到 #y未被格挡 的攻击伤害时，回复 #b%d 点生命。"
+    ]
+  }
+}

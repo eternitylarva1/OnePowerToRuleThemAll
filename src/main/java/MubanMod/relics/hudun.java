@@ -1,6 +1,7 @@
 package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
+import MubanMod.powers.hudunpower;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
@@ -48,7 +49,12 @@ public class hudun extends CustomRelic {
         }
 
     }
+public void atBattleStart() {
+    this.flash();
+    this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+    this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new hudunpower(AbstractDungeon.player, 1), 1));
 
+}
 
     public AbstractRelic makeCopy() {
         return new hudun();

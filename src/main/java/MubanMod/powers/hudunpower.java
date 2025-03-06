@@ -2,11 +2,15 @@ package MubanMod.powers;
 
 import MubanMod.helpers.ModHelper;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.localization.PowerStrings;
 import com.megacrit.cardcrawl.powers.AbstractPower;
+import com.megacrit.cardcrawl.powers.BufferPower;
 
 public class hudunpower extends AbstractPower {
     // 能力的ID
@@ -28,13 +32,27 @@ public class hudunpower extends AbstractPower {
         this.amount = Amount;
 
         // 添加一大一小两张能力图
-        String path128 = "MubanResources/images/relics/hudun.png";
-        String path48 = "MubanResources/images/relics/hudun.png";
+        String path128 = "MubanResources/images/powers/hudun.png";
+        String path48 = "MubanResources/images/powers/hudun.png";
         this.region128 = new TextureAtlas.AtlasRegion(ImageMaster.loadImage(path128), 0, 0, 84, 84);
         this.region48 = new TextureAtlas.AtlasRegion(ImageMaster.loadImage(path48), 0, 0, 32, 32);
 
         // 首次添加能力更新描述
         this.updateDescription();
+    }
+
+    @Override
+    public int onAttacked(DamageInfo info, int damageAmount) {
+        if (info.type != DamageInfo.DamageType.THORNS && info.type != DamageInfo.DamageType.HP_LOSS && info.owner != null && info.owner != this.owner) {
+            this.flash();
+            this.amount++;
+            if(this.amount>=6){
+                this.amount=0;
+                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, (AbstractCreature)null, new BufferPower(AbstractDungeon.player, 1), 1));
+            }
+            this.updateDescription();
+        }
+        return super.onAttacked(info, damageAmount);
     }
 
     // 能力在更新时如何修改描述
