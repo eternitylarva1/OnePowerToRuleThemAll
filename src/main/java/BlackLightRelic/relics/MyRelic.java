@@ -1,6 +1,7 @@
 package BlackLightRelic.relics;
 
 import BlackLightRelic.helpers.ModHelper;
+import BlackLightRelic.powers.zuzhizaisheng;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
@@ -63,14 +64,14 @@ public class MyRelic extends CustomRelic {
         this.counter+=damageAmount;
         switch (this.status){
             case 0:
-                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 1), 1));
+                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, 1), 1));
 
                 break;
                 case 1:
-                    this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 2), 2));
+                    this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, 2), 2));
                     break;
             default:
-                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 3), 3));
+                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, 3), 3));
                 break;
 
         }
