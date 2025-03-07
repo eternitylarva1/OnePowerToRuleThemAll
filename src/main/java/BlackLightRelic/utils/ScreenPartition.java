@@ -1,4 +1,4 @@
-package MubanMod.utils;
+package BlackLightRelic.utils;
 
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;

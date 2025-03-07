@@ -1,18 +1,22 @@
-package MubanMod.relics;
+package BlackLightRelic.relics;
 
-import MubanMod.helpers.ModHelper;
+import BlackLightRelic.helpers.ModHelper;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.GainBlockAction;
+import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.DexterityPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-import com.megacrit.cardcrawl.relics.HandDrill;
 
 public class chaoxuebilei extends CustomRelic {
+    //  遗物名称
+    //巢穴壁垒
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
     public static final String ID = ModHelper.makePath(chaoxuebilei.class.getSimpleName());
     // 图片路径（大小128x128，可参考同目录的图片）
@@ -20,7 +24,7 @@ public class chaoxuebilei extends CustomRelic {
     // 遗物未解锁时的轮廓。可以不使用。如果要使用，取消注释
     // private static final String OUTLINE_PATH = "ExampleModResources/img/relics/MyRelic_Outline.png";
     // 遗物类型
-    private static final RelicTier RELIC_TIER = RelicTier.COMMON;
+    private static final RelicTier RELIC_TIER = RelicTier.UNCOMMON;
     // 点击音效
     private static final LandingSound LANDING_SOUND = LandingSound.FLAT;
 
@@ -52,7 +56,14 @@ public class chaoxuebilei extends CustomRelic {
         int amount=(AbstractDungeon.player.maxHealth-AbstractDungeon.player.currentHealth)/30;
         AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player,AbstractDungeon.player,new DexterityPower(AbstractDungeon.player,amount),amount));
     }
+    public void onBlockBroken(AbstractCreature m) {
+        if(m instanceof AbstractPlayer){
+            this.flash();
+            this.addToBot(new RelicAboveCreatureAction(m, this));
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player,AbstractDungeon.player,new DexterityPower(AbstractDungeon.player,1),1));
 
+        }
+    }
     public AbstractRelic makeCopy() {
         return new chaoxuebilei();
     }

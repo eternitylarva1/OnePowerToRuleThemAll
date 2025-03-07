@@ -1,6 +1,6 @@
-package MubanMod.powers;
+package BlackLightRelic.powers;
 
-import MubanMod.helpers.ModHelper;
+import BlackLightRelic.helpers.ModHelper;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;

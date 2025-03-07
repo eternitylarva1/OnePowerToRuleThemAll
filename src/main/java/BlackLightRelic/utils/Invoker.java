@@ -1,4 +1,4 @@
-package MubanMod.utils;
+package BlackLightRelic.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

@@ -1,38 +1,31 @@
-package MubanMod.relics;
+package BlackLightRelic.relics;
 
-import MubanMod.helpers.ModHelper;
-import MubanMod.powers.heiguang;
+import BlackLightRelic.helpers.ModHelper;
+import BlackLightRelic.powers.heiguang;
 import basemod.abstracts.CustomRelic;
-import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.HealAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
-import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.events.shrines.Nloth;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.powers.BufferPower;
 import com.megacrit.cardcrawl.powers.PoisonPower;
-import com.megacrit.cardcrawl.powers.RegenPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
-public class heiguangzhengji extends CustomRelic {
+public class posuidezhengji extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
-    public static final String ID = ModHelper.makePath(heiguangzhengji.class.getSimpleName());
+    public static final String ID = ModHelper.makePath(posuidezhengji.class.getSimpleName());
     // 图片路径（大小128x128，可参考同目录的图片）
-    private static final String IMG_PATH = "MubanResources/images/relics/heiguangzhengji.png";
+    private static final String IMG_PATH = "MubanResources/images/relics/posuidezhengji.png";
     // 遗物未解锁时的轮廓。可以不使用。如果要使用，取消注释
     // private static final String OUTLINE_PATH = "ExampleModResources/img/relics/MyRelic_Outline.png";
     // 遗物类型
-    private static final RelicTier RELIC_TIER = RelicTier.COMMON;
+    private static final RelicTier RELIC_TIER = RelicTier.SPECIAL;
     // 点击音效
     private static final LandingSound LANDING_SOUND = LandingSound.FLAT;
 
-    public heiguangzhengji() {
+    public posuidezhengji() {
         super(ID, ImageMaster.loadImage(IMG_PATH), RELIC_TIER, LANDING_SOUND);
         this.counter=0;
         // 如果你需要轮廓图，取消注释下面一行并注释上面一行，不需要就删除
@@ -44,14 +37,13 @@ public class heiguangzhengji extends CustomRelic {
     public String getUpdatedDescription() {
         return this.DESCRIPTIONS[0];
     }
-
-    @Override
     public void onPlayCard(AbstractCard c, AbstractMonster m) {
         super.onPlayCard(c, m);
         for (AbstractMonster monster : AbstractDungeon.getCurrRoom().monsters.monsters)
         {
-            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new PoisonPower(monster,AbstractDungeon.player, 2), 2));
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new PoisonPower(monster,AbstractDungeon.player, 3), 3));
         }
+        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
         AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
     }
 
@@ -63,34 +55,22 @@ public class heiguangzhengji extends CustomRelic {
             //当有单位死去时，恢复死亡单位中毒层数一半的生命值
             AbstractDungeon.actionManager.addToBottom(new HealAction(AbstractDungeon.player, AbstractDungeon.player, m.getPower(PoisonPower.POWER_ID).amount/2));
 
-                    }
-    }
-    public void wasHPLost(int damageAmount) {
-        if (AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT && damageAmount > 0) {
-            this.flash();
-            this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 1), 1));
-            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
-            this.counter+=damageAmount;
-            //当拥有遗物后总计失去400点生命值时，“黑光针剂”将会被替换为“破碎的针剂”。
-            if (this.counter>=100)
-            {
-                this.counter=0;
-                this.flash();
-                this.addToBot(new RelicAboveCreatureAction(AbstractDungeon.player, this));
-                this.addToBot(new AbstractGameAction() {
-                    @Override
-                    public void update() {
-                        AbstractDungeon.player.loseRelic(heiguangzhengji.this.relicId);
-
-                        isDone=true;
-                    }
-                }
-                );
-                          }
         }
+    }
+
+    @Override
+    public void atTurnStart() {
+        super.atTurnStart();
+        for (AbstractMonster monster : AbstractDungeon.getCurrRoom().monsters.monsters)
+        {
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new heiguang(monster, 6), 6));
+
+        }
+        AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new heiguang(AbstractDungeon.player, 3), 3));
 
     }
+
     public AbstractRelic makeCopy() {
-        return new heiguangzhengji();
+        return new posuidezhengji();
     }
 }

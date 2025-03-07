@@ -1,4 +1,4 @@
-package MubanMod.helpers;
+package BlackLightRelic.helpers;
 
 public class ModHelper {
     public static String makePath(String id) {

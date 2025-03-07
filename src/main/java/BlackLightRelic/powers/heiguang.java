@@ -1,14 +1,21 @@
-package MubanMod.powers;
+package BlackLightRelic.powers;
 
-import MubanMod.helpers.ModHelper;
+import BlackLightRelic.helpers.ModHelper;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.evacipated.cardcrawl.mod.stslib.actions.common.StunMonsterAction;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.localization.PowerStrings;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
+import com.megacrit.cardcrawl.powers.VulnerablePower;
+import com.megacrit.cardcrawl.powers.WeakPower;
 
-public class heiguang extends AbstractPower {
+public class heiguang extends AbstractPower   {
     // 能力的ID
     public static final String POWER_ID = ModHelper.makePath("heiguang");
     // 能力的本地化字段
@@ -17,6 +24,7 @@ public class heiguang extends AbstractPower {
     private static final String NAME = powerStrings.NAME;
     // 能力的描述
     private static final String[] DESCRIPTIONS = powerStrings.DESCRIPTIONS;
+    private int amountcounter=0;
 
     public heiguang(AbstractCreature owner, int Amount) {
         this.name = NAME;
@@ -36,9 +44,31 @@ public class heiguang extends AbstractPower {
         // 首次添加能力更新描述
         this.updateDescription();
     }
-
+public void onSpecificTrigger(){
+        this.addToBot(new AbstractGameAction() {
+            heiguang power=heiguang.this;
+            @Override
+            public void update() {
+                System.out.println("检测到黑光施加"+power.amount);
+                if(power.amount>=33)
+                    power.amount=0;
+                AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(power.owner,power.owner,new VulnerablePower(power.owner,6,false),6));
+                AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(power.owner,power.owner,new WeakPower(power.owner,6,false),6));
+                if(power.owner instanceof AbstractMonster) {
+                    AbstractDungeon.actionManager.addToBottom(new StunMonsterAction((AbstractMonster) power.owner, power.owner));
+                }
+                else{
+                    AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player, power.owner, new StunedPower(AbstractDungeon.player)));
+                }
+                isDone=true;
+            }
+        });
+}
     // 能力在更新时如何修改描述
     public void updateDescription() {
         this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1];
     }
+
+
+
 }

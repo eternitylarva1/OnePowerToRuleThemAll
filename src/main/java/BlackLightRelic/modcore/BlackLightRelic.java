@@ -1,33 +1,31 @@
-package MubanMod.modcore;
+package BlackLightRelic.modcore;
 
-import MubanMod.relics.MyRelic;
+import BlackLightRelic.powers.heiguang;
+import BlackLightRelic.relics.MyRelic;
 import basemod.AutoAdd;
 import basemod.BaseMod;
 import basemod.abstracts.CustomRelic;
 import basemod.helpers.RelicType;
-import basemod.interfaces.EditRelicsSubscriber;
-import basemod.interfaces.EditStringsSubscriber;
-import basemod.interfaces.PostInitializeSubscriber;
-import basemod.interfaces.StartActSubscriber;
+import basemod.interfaces.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.helpers.MonsterHelper;
-import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.PowerStrings;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
 
 @SpireInitializer
-public class SeenextMonster implements PostInitializeSubscriber,StartActSubscriber , EditStringsSubscriber, EditRelicsSubscriber { // 实现接口
-    public SeenextMonster() {
+public class BlackLightRelic implements PostPowerApplySubscriber,PostInitializeSubscriber,StartActSubscriber , EditStringsSubscriber, EditRelicsSubscriber { // 实现接口
+    public BlackLightRelic() {
         BaseMod.subscribe(this); // 告诉basemod你要订阅事件
     }
     public static final String MyModID = "Muban";
 
     public static void initialize() {
-        new SeenextMonster();
+        new BlackLightRelic();
     }
 
     // 当basemod开始注册mod卡牌时，便会调用这个函数
@@ -67,5 +65,13 @@ public class SeenextMonster implements PostInitializeSubscriber,StartActSubscrib
     @Override
     public void receivePostInitialize() {
 
+    }
+
+    @Override
+    public void receivePostPowerApplySubscriber(AbstractPower abstractPower, AbstractCreature abstractCreature, AbstractCreature abstractCreature1) {
+        if(abstractPower instanceof heiguang){
+            AbstractPower power = AbstractDungeon.player.getPower("heiguang");
+            power.onSpecificTrigger();
+        };
     }
 }

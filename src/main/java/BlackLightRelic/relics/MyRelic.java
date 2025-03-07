@@ -1,18 +1,19 @@
-package MubanMod.relics;
+package BlackLightRelic.relics;
 
-import MubanMod.helpers.ModHelper;
+import BlackLightRelic.helpers.ModHelper;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.PowerTip;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.monsters.beyond.Darkling;
+import com.megacrit.cardcrawl.powers.MinionPower;
 import com.megacrit.cardcrawl.powers.RegenPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-import com.megacrit.cardcrawl.relics.RunicCube;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class MyRelic extends CustomRelic {
@@ -57,17 +58,38 @@ public class MyRelic extends CustomRelic {
     }
 
     public void wasHPLost(int damageAmount) {
+        this.counter+=damageAmount;
+        switch (this.status){
+            case 0:
+                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 1), 1));
+
+                break;
+                case 1:
+                    this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 2), 2));
+                    break;
+            default:
+                this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 3), 3));
+                break;
+
+        }
+
         if (AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT && damageAmount > 0) {
             this.flash();
-            this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, 1), 1));
             this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
-            this.counter+=damageAmount;
-
         }
 
     }
 
-    // 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
+    @Override
+    public void onMonsterDeath(AbstractMonster m) {
+        super.onMonsterDeath(m);
+        if(this.status==2) {
+            if (!m.hasPower(MinionPower.POWER_ID) && !(m instanceof Darkling)) {
+                AbstractDungeon.player.increaseMaxHp(1, false);
+            }
+        }
+    }
+// 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
 
     public String getUpdatedDescription() {
         switch (this.status){
