@@ -38,7 +38,7 @@ public class juanxu extends CustomRelic {
     public void onAttack(DamageInfo info, int damageAmount, AbstractCreature target) {
         if (info.owner == AbstractDungeon.player && info.type != DamageInfo.DamageType.THORNS && info.type != DamageInfo.DamageType.HP_LOSS && info.owner != target) {
             this.flash();
-            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(target, AbstractDungeon.player, new heiguang(target, 1), 1));
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(target, AbstractDungeon.player, new heiguang(target, 3), 3));
 
         }
     }

@@ -117,7 +117,7 @@ public class MyRelic extends CustomRelic {
             this.tips.add(new PowerTip(this.name, this.description));
         }
         this.initializeTips();
-        return this.description;
+        return this.relicStrings.DESCRIPTIONS[0];
 
     }
 
