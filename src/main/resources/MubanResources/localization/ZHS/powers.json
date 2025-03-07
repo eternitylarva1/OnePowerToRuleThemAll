@@ -1,8 +1,19 @@
 {
   "Muban:heiguang": {
-    "NAME": "示例能力",
+    "NAME": "黑光侵染",
     "DESCRIPTIONS": [
-      "当你受到 #y未被格挡 的攻击伤害时，回复 #b%d 点生命。"
+      "每当层数超过33层时，目标会被眩晕并添加6层易伤与虚弱并归零"
     ]
-  }
+  },"Muban:StunnedPower": {
+  "NAME": "眩晕",
+  "DESCRIPTIONS": [
+    "跳过下个出牌阶段"
+  ]
+},"Muban:hudunpower": {
+  "NAME": "护盾",
+  "DESCRIPTIONS": [
+    "每次受到 #y6 次生命值伤害后获得 #y1 层 缓冲 "
+
+  ]
+}
 }

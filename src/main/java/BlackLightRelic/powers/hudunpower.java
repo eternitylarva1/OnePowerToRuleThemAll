@@ -1,6 +1,7 @@
 package BlackLightRelic.powers;
 
 import BlackLightRelic.helpers.ModHelper;
+import BlackLightRelic.utils.TextureUtils;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
@@ -14,7 +15,7 @@ import com.megacrit.cardcrawl.powers.BufferPower;
 
 public class hudunpower extends AbstractPower {
     // 能力的ID
-    public static final String POWER_ID = ModHelper.makePath("heiguang");
+    public static final String POWER_ID = ModHelper.makePath("hudunpower");
     // 能力的本地化字段
     private static final PowerStrings powerStrings = CardCrawlGame.languagePack.getPowerStrings(POWER_ID);
     // 能力的名称
@@ -35,7 +36,7 @@ public class hudunpower extends AbstractPower {
         String path128 = "MubanResources/images/powers/hudun.png";
         String path48 = "MubanResources/images/powers/hudun.png";
         this.region128 = new TextureAtlas.AtlasRegion(ImageMaster.loadImage(path128), 0, 0, 84, 84);
-        this.region48 = new TextureAtlas.AtlasRegion(ImageMaster.loadImage(path48), 0, 0, 32, 32);
+        this.region48 = TextureUtils.resizeTexture(this.region128, 48, 48);
 
         // 首次添加能力更新描述
         this.updateDescription();
@@ -43,7 +44,7 @@ public class hudunpower extends AbstractPower {
 
     @Override
     public int onAttacked(DamageInfo info, int damageAmount) {
-        if (info.type != DamageInfo.DamageType.THORNS && info.type != DamageInfo.DamageType.HP_LOSS && info.owner != null && info.owner != this.owner) {
+        if (info.type != DamageInfo.DamageType.THORNS && info.type != DamageInfo.DamageType.HP_LOSS && info.owner != null && info.owner != this.owner &&damageAmount > 0) {
             this.flash();
             this.amount++;
             if(this.amount>=6){
@@ -57,6 +58,6 @@ public class hudunpower extends AbstractPower {
 
     // 能力在更新时如何修改描述
     public void updateDescription() {
-        this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1];
+        this.description = DESCRIPTIONS[0];
     }
 }

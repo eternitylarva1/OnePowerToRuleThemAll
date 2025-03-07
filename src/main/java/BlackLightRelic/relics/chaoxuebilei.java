@@ -30,7 +30,6 @@ public class chaoxuebilei extends CustomRelic {
 
     public chaoxuebilei() {
         super(ID, ImageMaster.loadImage(IMG_PATH), RELIC_TIER, LANDING_SOUND);
-        this.counter=0;
         // 如果你需要轮廓图，取消注释下面一行并注释上面一行，不需要就删除
         // super(ID, ImageMaster.loadImage(IMG_PATH), ImageMaster.loadImage(OUTLINE_PATH), RELIC_TIER, LANDING_SOUND);
     }
@@ -54,8 +53,9 @@ public class chaoxuebilei extends CustomRelic {
     public void atBattleStart() {
 //效果2：战斗开始时根据角色已损失生命值获得敏捷（每损失30点生命值获得1点敏捷）
         int amount=(AbstractDungeon.player.maxHealth-AbstractDungeon.player.currentHealth)/30;
-        AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player,AbstractDungeon.player,new DexterityPower(AbstractDungeon.player,amount),amount));
-    }
+        if(amount>0) {
+            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new DexterityPower(AbstractDungeon.player, amount), amount));
+        }}
     public void onBlockBroken(AbstractCreature m) {
         if(m instanceof AbstractPlayer){
             this.flash();

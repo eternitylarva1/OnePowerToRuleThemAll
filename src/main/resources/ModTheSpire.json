@@ -1,10 +1,10 @@
 {
   "modid": "Muban",
-  "name": "蝶幼的Mod制作模版",
+  "name": "待测试的mod",
   "author_list": ["Dieyou",""],
-  "description": "mod模板。",
+  "description": "等待测试黑光遗物mod。",
   "version": "0.0.1",
   "sts_version": "12-22-2020",
   "mts_version": "3.23.2",
-  "dependencies": ["basemod"]
+  "dependencies": ["basemod","stslib"]
 }

@@ -24,7 +24,7 @@ public class MyRelic extends CustomRelic {
     // 遗物未解锁时的轮廓。可以不使用。如果要使用，取消注释
     // private static final String OUTLINE_PATH = "ExampleModResources/img/relics/MyRelic_Outline.png";
     // 遗物类型
-    private static final RelicTier RELIC_TIER = RelicTier.COMMON;
+    private static final RelicTier RELIC_TIER = RelicTier.SPECIAL;
     // 点击音效
     private static final LandingSound LANDING_SOUND = LandingSound.FLAT;
     public int status=0;
@@ -52,7 +52,9 @@ public class MyRelic extends CustomRelic {
 
         this.description =this.getUpdatedDescription();
         this.tips.clear();
-        this.tips.add(new PowerTip(this.name, this.description));
+        if(this.tips.size()<2) {
+            this.tips.add(new PowerTip(this.name, this.description));
+        }
         this.initializeTips();
 
     }
@@ -110,7 +112,9 @@ public class MyRelic extends CustomRelic {
         this.name=this.relicStrings.NAME;
         this.description =this.relicStrings.DESCRIPTIONS[0];
         this.tips.clear();
-        this.tips.add(new PowerTip(this.name, this.description));
+        if(this.tips.size()<2) {
+            this.tips.add(new PowerTip(this.name, this.description));
+        }
         this.initializeTips();
         return this.description;
 
