@@ -2,8 +2,15 @@ package MubanMod.relics;
 
 import MubanMod.helpers.ModHelper;
 import basemod.abstracts.CustomRelic;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.GainBlockAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.powers.DexterityPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.HandDrill;
 
 public class chaoxuebilei extends CustomRelic {
     // 遗物ID（此处的ModHelper在“04 - 本地化”中提到）
@@ -28,6 +35,22 @@ public class chaoxuebilei extends CustomRelic {
 
     public String getUpdatedDescription() {
         return this.DESCRIPTIONS[0];
+    }
+
+    @Override
+    public void onPlayCard(AbstractCard c, AbstractMonster m) {
+        super.onPlayCard(c, m);
+        //效果1：每次打出能力牌时，获得该能力牌能耗3倍的格挡。
+        if (c.type== AbstractCard.CardType.POWER)
+        {
+            AbstractDungeon.actionManager.addToBottom(new GainBlockAction(AbstractDungeon.player,AbstractDungeon.player,c.costForTurn*3,true));
+
+        }
+    }
+    public void atBattleStart() {
+//效果2：战斗开始时根据角色已损失生命值获得敏捷（每损失30点生命值获得1点敏捷）
+        int amount=(AbstractDungeon.player.maxHealth-AbstractDungeon.player.currentHealth)/30;
+        AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(AbstractDungeon.player,AbstractDungeon.player,new DexterityPower(AbstractDungeon.player,amount),amount));
     }
 
     public AbstractRelic makeCopy() {
