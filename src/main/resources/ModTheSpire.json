@@ -1,9 +1,9 @@
 {
   "modid": "Muban",
-  "name": "待测试的mod(1)",
-  "author_list": ["Dieyou",""],
-  "description": "等待测试黑光遗物mod。",
-  "version": "0.0.2",
+  "name": "黑光遗物Mod",
+  "author_list": ["Dieyou"],
+  "description": "",
+  "version": "0.0.3",
   "sts_version": "12-22-2020",
   "mts_version": "3.23.2",
   "dependencies": ["basemod","stslib"]
