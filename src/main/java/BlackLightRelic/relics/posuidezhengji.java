@@ -43,8 +43,6 @@ public class posuidezhengji extends CustomRelic {
         {
             AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new PoisonPower(monster,AbstractDungeon.player, 3), 3));
         }
-        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
-        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
     }
 
     @Override

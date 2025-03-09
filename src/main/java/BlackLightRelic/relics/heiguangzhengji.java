@@ -50,8 +50,7 @@ public class heiguangzhengji extends CustomRelic {
         {
             AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, AbstractDungeon.player, new PoisonPower(monster,AbstractDungeon.player, 2), 2));
         }
-        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(AbstractDungeon.player, AbstractDungeon.player, 1));
-    }
+      }
 
     @Override
     public void onMonsterDeath(AbstractMonster m) {
