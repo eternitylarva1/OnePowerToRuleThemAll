@@ -1,6 +1,7 @@
 package BlackLightRelic.relics;
 
 import BlackLightRelic.helpers.ModHelper;
+import BlackLightRelic.powers.shiyingxing;
 import BlackLightRelic.powers.zuzhizaisheng;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
@@ -14,6 +15,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.beyond.Darkling;
 import com.megacrit.cardcrawl.powers.MinionPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.Pear;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class shiyingxingzuzhi extends CustomRelic {
@@ -52,7 +54,8 @@ public class shiyingxingzuzhi extends CustomRelic {
             this.flash();
 
            this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, 3), 3));
-            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, 1), 1));
+           this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
 
             }
 
@@ -66,10 +69,16 @@ public class shiyingxingzuzhi extends CustomRelic {
         super.onMonsterDeath(m);
 
             if (!m.hasPower(MinionPower.POWER_ID) && !(m instanceof Darkling)) {
-                AbstractDungeon.player.increaseMaxHp(1, false);
+                AbstractDungeon.player.increaseMaxHp(1+m.maxHealth/100, false);
             }
     }
-// 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
+
+    @Override
+    public void obtain() {
+        super.obtain();
+        AbstractDungeon.player.increaseMaxHp(30, true);
+    }
+    // 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
 
     public String getUpdatedDescription() {
         return DESCRIPTIONS[0];

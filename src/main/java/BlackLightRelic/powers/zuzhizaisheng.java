@@ -72,7 +72,7 @@ public class zuzhizaisheng extends AbstractPower {
                             this.target.tint.color = Color.CHARTREUSE.cpy();
                             this.target.tint.changeColor(Color.WHITE.cpy());
 
-                            this.target.heal(this.amount*AbstractDungeon.player.maxHealth/100, true);
+                            this.target.heal((int) Math.ceil((double) (this.amount * (AbstractDungeon.player.maxHealth - AbstractDungeon.player.currentHealth)) /100), true);
                         }
 
                         if (this.target.isPlayer) {
