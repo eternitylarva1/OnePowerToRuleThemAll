@@ -53,7 +53,7 @@ public class zuzhizaisheng extends AbstractPower {
         this.updateDescription();
     }
     public void updateDescription() {
-        this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1];
+        this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1]+(int) Math.ceil((double) (this.amount * (AbstractDungeon.player.maxHealth - AbstractDungeon.player.currentHealth)) /100)+DESCRIPTIONS[2];
     }
 
     public void atEndOfTurn(boolean isPlayer) {

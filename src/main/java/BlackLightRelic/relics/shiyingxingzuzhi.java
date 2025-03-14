@@ -53,8 +53,8 @@ public class shiyingxingzuzhi extends CustomRelic {
         if (AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT && damageAmount > 0) {
             this.flash();
 
-           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, 3), 3));
-           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, 1), 1));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/3)), (int)Math.ceil((double)damageAmount/3)));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/10)), (int)Math.ceil((double)damageAmount/5)));
            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
 
             }

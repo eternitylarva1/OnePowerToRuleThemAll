@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ReducePowerAction;
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -27,8 +28,8 @@ public class shiyingxing extends AbstractPower {
     // 能力的描述
     private static final String[] DESCRIPTIONS = powerStrings.DESCRIPTIONS;
     private int amountcounter=0;
-
-    public shiyingxing(AbstractCreature owner, int Amount) {
+    private boolean justApplied = false;
+    public shiyingxing(AbstractCreature owner, int Amount,boolean isSourceMonster) {
         this.name = NAME;
         this.ID = POWER_ID;
         this.owner = owner;
@@ -42,17 +43,36 @@ public class shiyingxing extends AbstractPower {
         String path48 = "MubanResources/images/powers/shiyingxing.png";
         this.region128 = new TextureAtlas.AtlasRegion(ImageMaster.loadImage(path128), 0, 0, 84, 84);
         this.region48 = TextureUtils.resizeTexture(this.region128, 48, 48);
-
+        if (AbstractDungeon.actionManager.turnHasEnded && isSourceMonster) {
+            this.justApplied = true;
+        }
+        this.isTurnBased = true;
         // 首次添加能力更新描述
-        this.updateDescription();
+        this.updateDescription();}
+    public shiyingxing(AbstractCreature owner, int Amount) {
+   this(owner,Amount,false);
     }
     public void updateDescription() {
         this.description = DESCRIPTIONS[0] +this.amount*100/(this.amount+10)+ DESCRIPTIONS[1];
     }
+    public void atEndOfRound() {
+
+        if (this.justApplied) {
+            this.justApplied = false;
+        } else {
+            if (this.amount == 0) {
+                this.addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, this.ID));
+            } else {
+                this.addToBot(new ReducePowerAction(this.owner, this.owner, this.ID, (int) Math.ceil((double) this.amount / 10.0F)));
+            }
+
+        }
+    }
+
 
     public float atDamageReceive(float damage, DamageInfo.DamageType type) {
         if (type == DamageInfo.DamageType.NORMAL) {
-          return damage*(1-damage/(damage+10));
+          return damage*(1- (float) this.amount /(this.amount+10));
         } else {
             return damage;
         }
