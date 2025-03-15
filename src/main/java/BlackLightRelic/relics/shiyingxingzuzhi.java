@@ -54,7 +54,7 @@ public class shiyingxingzuzhi extends CustomRelic {
             this.flash();
 
            this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/3)), (int)Math.ceil((double)damageAmount/3)));
-           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/10)), (int)Math.ceil((double)damageAmount/5)));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/5)), (int)Math.ceil((double)damageAmount/5)));
            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
 
             }
@@ -76,7 +76,6 @@ public class shiyingxingzuzhi extends CustomRelic {
     @Override
     public void obtain() {
         super.obtain();
-        AbstractDungeon.player.increaseMaxHp(30, true);
     }
     // 获取遗物描述，但原版游戏只在初始化和获取遗物时调用，故该方法等于初始描述
 

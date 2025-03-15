@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.localization.PowerStrings;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.VulnerablePower;
+import com.megacrit.cardcrawl.relics.TinyHouse;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class shiyingxing extends AbstractPower {
@@ -53,7 +54,7 @@ public class shiyingxing extends AbstractPower {
    this(owner,Amount,false);
     }
     public void updateDescription() {
-        this.description = DESCRIPTIONS[0] +this.amount*100/(this.amount+10)+ DESCRIPTIONS[1];
+        this.description = DESCRIPTIONS[0] +this.amount*100/(this.amount+20)+ DESCRIPTIONS[1];
     }
     public void atEndOfRound() {
 
@@ -63,7 +64,7 @@ public class shiyingxing extends AbstractPower {
             if (this.amount == 0) {
                 this.addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, this.ID));
             } else {
-                this.addToBot(new ReducePowerAction(this.owner, this.owner, this.ID, (int) Math.ceil((double) this.amount / 10.0F)));
+                this.addToBot(new ReducePowerAction(this.owner, this.owner, this.ID, (int) Math.ceil((double) this.amount / 5.0F)));
             }
 
         }
@@ -72,7 +73,7 @@ public class shiyingxing extends AbstractPower {
 
     public float atDamageReceive(float damage, DamageInfo.DamageType type) {
         if (type == DamageInfo.DamageType.NORMAL) {
-          return damage*(1- (float) this.amount /(this.amount+10));
+          return damage*(1- (float) this.amount /(this.amount+20));
         } else {
             return damage;
         }
