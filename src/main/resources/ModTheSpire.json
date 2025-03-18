@@ -3,7 +3,7 @@
   "name": "黑光遗物Mod",
   "author_list": ["Dieyou"],
   "description": "",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "sts_version": "12-22-2020",
   "mts_version": "3.23.2",
   "dependencies": ["basemod","stslib"]

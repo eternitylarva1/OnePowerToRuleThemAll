@@ -54,7 +54,7 @@ public class shiyingxing extends AbstractPower {
    this(owner,Amount,false);
     }
     public void updateDescription() {
-        this.description = DESCRIPTIONS[0] +this.amount*100/(this.amount+20)+ DESCRIPTIONS[1];
+        this.description = DESCRIPTIONS[0] + this.amount*100 /(this.amount+ Math.ceil(((float) this.owner.currentHealth /3)))+ DESCRIPTIONS[1];
     }
     public void atEndOfRound() {
 
@@ -64,7 +64,7 @@ public class shiyingxing extends AbstractPower {
             if (this.amount == 0) {
                 this.addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, this.ID));
             } else {
-                this.addToBot(new ReducePowerAction(this.owner, this.owner, this.ID, (int) Math.ceil((double) this.amount / 5.0F)));
+                this.addToBot(new ReducePowerAction(this.owner, this.owner, this.ID, (int) Math.ceil((double)this.owner.currentHealth / 20F)));
             }
 
         }
@@ -73,7 +73,7 @@ public class shiyingxing extends AbstractPower {
 
     public float atDamageReceive(float damage, DamageInfo.DamageType type) {
         if (type == DamageInfo.DamageType.NORMAL) {
-          return damage*(1- (float) this.amount /(this.amount+20));
+          return (float) (damage*(1- (float) this.amount /(this.amount+ Math.ceil(((float) this.owner.currentHealth /3)))));
         } else {
             return damage;
         }

@@ -53,8 +53,8 @@ public class shiyingxingzuzhi extends CustomRelic {
         if (AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT && damageAmount > 0) {
             this.flash();
 
-           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/3)), (int)Math.ceil((double)damageAmount/3)));
-           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/5)), (int)Math.ceil((double)damageAmount/5)));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new zuzhizaisheng(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/6)), (int)Math.ceil((double)damageAmount/6)));
+           this.addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new shiyingxing(AbstractDungeon.player, (int)Math.ceil((double)damageAmount/6)), (int)Math.ceil((double)damageAmount/6)));
            this.addToTop(new RelicAboveCreatureAction(AbstractDungeon.player, this));
 
             }
@@ -69,7 +69,7 @@ public class shiyingxingzuzhi extends CustomRelic {
         super.onMonsterDeath(m);
 
             if (!m.hasPower(MinionPower.POWER_ID) && !(m instanceof Darkling)) {
-                AbstractDungeon.player.increaseMaxHp(1+m.maxHealth/100, false);
+                AbstractDungeon.player.increaseMaxHp((int) Math.ceil((double) m.maxHealth*6/100), false);
             }
     }
 

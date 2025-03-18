@@ -9,6 +9,7 @@ import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.OnReceivePowerPower
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.ReducePowerAction;
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.actions.unique.RegenAction;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
@@ -53,60 +54,53 @@ public class zuzhizaisheng extends AbstractPower {
         this.updateDescription();
     }
     public void updateDescription() {
-        this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1]+(int) Math.ceil((double) (this.amount * (AbstractDungeon.player.maxHealth - AbstractDungeon.player.currentHealth)) /100)+DESCRIPTIONS[2];
+        this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1]+(int) Math.ceil((double) (this.amount * (this.owner.maxHealth - this.owner.currentHealth)) /100)+DESCRIPTIONS[2];
     }
 
     public void atEndOfTurn(boolean isPlayer) {
         this.flashWithoutSound();
         this.addToTop(new AbstractGameAction() {
-            private AbstractCreature target = zuzhizaisheng.this.owner;
-            private float duration=Settings.ACTION_DUR_FAST;
-            private int amount=zuzhizaisheng.this.amount;
-            @Override
-            public void update() {
-                if (AbstractDungeon.getCurrRoom().phase != AbstractRoom.RoomPhase.COMBAT) {
-                    this.isDone = true;
-                } else {
-                    if (this.duration == Settings.ACTION_DUR_FAST) {
-                        if (this.target.currentHealth > 0) {
-                            this.target.tint.color = Color.CHARTREUSE.cpy();
-                            this.target.tint.changeColor(Color.WHITE.cpy());
+                          private AbstractCreature target = zuzhizaisheng.this.owner;
+                          private float duration = Settings.ACTION_DUR_FAST;
+                          private int amount = zuzhizaisheng.this.amount;
 
-                            this.target.heal((int) Math.ceil((double) (this.amount * (AbstractDungeon.player.maxHealth - AbstractDungeon.player.currentHealth)) /100), true);
-                        }
+                          @Override
+                          public void update() {
+                              if (AbstractDungeon.getCurrRoom().phase != AbstractRoom.RoomPhase.COMBAT) {
+                                  this.isDone = true;
+                              } else {
+                                  if (this.duration == Settings.ACTION_DUR_FAST) {
+                                      AbstractPower p = this.target.getPower(zuzhizaisheng.POWER_ID);
+                                      if (this.target.currentHealth > 0) {
+                                          this.target.tint.color = Color.CHARTREUSE.cpy();
+                                          this.target.tint.changeColor(Color.WHITE.cpy());
 
-                        if (this.target.isPlayer) {
-                            AbstractPower p = this.target.getPower(zuzhizaisheng.POWER_ID);
-                            if (p != null) {
-                                if (p.amount == 2) {
-                                    AbstractDungeon.actionManager.addToBottom(new ReducePowerAction(p.owner,p.owner, p.ID, 1));
-                                    p.updateDescription();
-                                    isDone=true;
-                                    return;
-                                }
-                                }
-                                int amount= p.amount*2/3;
+                                          this.target.heal((int) Math.ceil((double) (this.amount * (p.owner.maxHealth - p.owner.currentHealth)) / 100), true);
+                                      }
 
-                                if (amount <1) {
-                                    this.target.powers.remove(p);
-                                } else {
-                                AbstractDungeon.actionManager.addToBottom(new ReducePowerAction(p.owner,p.owner, p.ID, amount/2));
-                                    p.updateDescription();
-                                }
-                            }
-                        }
-                    }
+                                      if (this.target.isPlayer) {
+                                         p = this.target.getPower(zuzhizaisheng.POWER_ID);
+                                          if (p != null) {
+                                              if (p.amount <= 0) {
+                                                  this.addToBot(new RemoveSpecificPowerAction(p.owner, p.owner, p.ID));
+                                              } else {
+                                                  this.addToBot(new ReducePowerAction(p.owner, p.owner, p.ID, (int) Math.ceil((double) p.owner.currentHealth / 10F)));
+                                              }
 
-                    this.tickDuration();
-                }
+                                          }
+                                      }
+                                  }
+
+                                  this.tickDuration();
+                              }
 
 
-        });
-    }
+                          }
 
+                      });
     // 能力在更新时如何修改描述
 
 
 
 
-}
+}}
