@@ -1,4 +1,4 @@
-package BlackLightRelic.utils;
+package OnePower.utils;
 
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;

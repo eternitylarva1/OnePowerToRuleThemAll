@@ -1,4 +1,4 @@
-package BlackLightRelic.utils;
+package OnePower.utils;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.Pixmap;

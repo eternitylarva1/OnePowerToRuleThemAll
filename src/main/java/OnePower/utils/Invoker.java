@@ -1,4 +1,4 @@
-package BlackLightRelic.utils;
+package OnePower.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
