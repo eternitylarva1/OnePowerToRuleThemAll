@@ -111,10 +111,22 @@ public class OnePower implements PostInitializeSubscriber,EditKeywordsSubscriber
                 throw new RuntimeException(e);
             }
         };
+        Consumer<ModToggleButton> clickAction2 = (button) -> {
+            config.setBool("bool3",button.enabled);
+            System.out.println("选择3！"+button.enabled);
+            try {
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
         ModLabeledToggleButton bool = new   ModLabeledToggleButton("负数？", startingXPos-getXPos(1000)+getXPos(400), settingYPos-getYPos(64.0f)*2, Color.WHITE, FontHelper.buttonLabelFont, config.getBool("bool"),settingsPanel, (label) -> {
         },clickAction);
         ModLabeledToggleButton bool1 = new   ModLabeledToggleButton("负数？", startingXPos+getXPos(200), settingYPos-getYPos(64.0f)*2, Color.WHITE, FontHelper.buttonLabelFont, config.getBool("bool1"),settingsPanel, (label) -> {
         },clickAction1);
+        ModLabeledToggleButton bool2 = new   ModLabeledToggleButton("随机模式？", startingXPos-getXPos(1000)+getXPos(400), settingYPos, Color.WHITE, FontHelper.buttonLabelFont, config.getBool("bool3"),settingsPanel, (label) -> {
+        },clickAction2);
         ModPanel settingsPanel = new ModPanel();
         ArrayList<String> tempNames = new ArrayList<>();
         ArrayList<String> tempids = new ArrayList<>();
@@ -132,13 +144,13 @@ public class OnePower implements PostInitializeSubscriber,EditKeywordsSubscriber
         }
         System.out.println(tempNames);
         BreedsearchButton.charOptions = tempNames.toArray(new String[0]);
-        ModLabel label1 = new ModLabel("玩家身上debuff->？", startingXPos-getXPos(1000), settingYPos, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
+        ModLabel label1 = new ModLabel("玩家身上debuff->？", 500, 800, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
         });
-        ModLabel label2 = new ModLabel("玩家身上buff->？", startingXPos-getXPos(200), settingYPos, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
+        ModLabel label2 = new ModLabel("玩家身上buff->？", 1000, 800, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
         });
-        ModLabel label3 = new ModLabel("怪物身上debuff->？", startingXPos-getXPos(1000), settingYPos-getYPos(64.0f), Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
+        ModLabel label3 = new ModLabel("怪物身上debuff->？", 500, 750, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
         });
-        ModLabel label4 = new ModLabel("怪物身上buff->？", startingXPos-getXPos(200), settingYPos-getYPos(64.0f), Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
+        ModLabel label4 = new ModLabel("怪物身上buff->？", 1000, 750, Color.WHITE, FontHelper.buttonLabelFont, settingsPanel, (label) -> {
         });
         ModLabeledDropdown BuffChange = new ModLabeledDropdown("", (String)null, startingXPos+Settings.WIDTH/6.4f, settingYPos+Settings.HEIGHT/4.32f, Settings.CREAM_COLOR, FontHelper.charDescFont, settingsPanel, tempNames, (label) -> {
         }, (dropdownMenu) -> {
@@ -235,6 +247,8 @@ public class OnePower implements PostInitializeSubscriber,EditKeywordsSubscriber
         }
         BuffChange.dropdownMenu.setSelectedIndex(Integer.valueOf(config.getInt("setted_Index")));
         deBuffChange.dropdownMenu.setSelectedIndex(Integer.valueOf(config.getInt("setted_Index1")));
+        BuffChangeM.dropdownMenu.setSelectedIndex(Integer.valueOf(config.getInt("setted_Index2")));
+        deBuffChangeM.dropdownMenu.setSelectedIndex(Integer.valueOf(config.getInt("setted_Index3")));
         settingsPanel.addUIElement(label1);
         settingsPanel.addUIElement(label2);
         settingsPanel.addUIElement(label3);
@@ -245,6 +259,7 @@ public class OnePower implements PostInitializeSubscriber,EditKeywordsSubscriber
         settingsPanel.addUIElement(BuffChange);
         settingsPanel.addUIElement(deBuffChangeM);
         settingsPanel.addUIElement(deBuffChange);
+        settingsPanel.addUIElement(bool2);
         Texture badgeTexture = new Texture(Gdx.files.internal("OnePowerResources/images/relics/MyRelic.png"));
         registerModBadge(badgeTexture, "OnePower", "Butterfly Norm", "这是一段描述", settingsPanel);
     }

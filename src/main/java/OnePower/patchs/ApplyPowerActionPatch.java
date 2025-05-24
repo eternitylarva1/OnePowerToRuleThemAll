@@ -4,6 +4,7 @@ import OnePower.ui.PowerButton;
 import OnePower.utils.Invoker;
 import basemod.BaseMod;
 import basemod.EasyConfigPanel;
+import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
@@ -20,12 +21,14 @@ import com.megacrit.cardcrawl.powers.FocusPower;
 import loadout.LoadoutMod;
 import loadout.relics.PowerGiver;
 import loadout.screens.PowerSelectScreen;
+import org.lwjgl.Sys;
 
 import java.util.Iterator;
 
 import static OnePower.modcore.OnePower.config;
 import static OnePower.ui.BreedsearchButton.pid;
 import static OnePower.ui.BreedsearchButton.savedPowers;
+import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.cardRandomRng;
 import static loadout.relics.PowerGiver.getPower;
 import static loadout.screens.PowerSelectScreen.dummyPlayer;
 
@@ -40,6 +43,15 @@ import static loadout.screens.PowerSelectScreen.dummyPlayer;
         @SpirePostfixPatch
         public static void Postfix(ApplyPowerAction  __instance, AbstractCreature target, AbstractCreature source, AbstractPower powerToApply, int stackAmount, boolean isFast, AbstractGameAction.AttackEffect effect) {
            if(target==AbstractDungeon.player) {
+               if(config.getBool("bool3")){
+                   System.out.println("检测到随机模式");
+                   AbstractPower power = getPower(savedPowers.get(cardRandomRng.random(0,savedPowers.size()-1)) , powerToApply.amount, AbstractDungeon.player, new Madness());
+                   if (power != null) {
+                       Invoker.setField(__instance, "powerToApply", power);
+                       Invoker.setField(__instance, "amount", power.amount);
+                   }
+                   return;
+               }
                if (powerToApply.type == AbstractPower.PowerType.BUFF) {
                    int Index=1;
                    if(config.getInt("setted_Index")!=0) {
@@ -69,6 +81,7 @@ import static loadout.screens.PowerSelectScreen.dummyPlayer;
                       }
                   }
                }
+
            }else if(target instanceof AbstractMonster){
                if(powerToApply.type == AbstractPower.PowerType.BUFF) {
                    int Index=1;
